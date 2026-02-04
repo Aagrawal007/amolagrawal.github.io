@@ -54,7 +54,16 @@
       100% { transform: translateY(-110vh); opacity: 0; }
     }
 
-    /* Center GIF styling */
+    /* Styling for the Success GIF */
+    #success-gif {
+      max-width: 280px;
+      border-radius: 15px;
+      margin-top: 20px;
+      box-shadow: 0 0 20px rgba(255, 75, 110, 0.5); /* Romantic Glow */
+      border: 3px solid #fff;
+    }
+
+    /* Center GIF styling for "No" hover */
     #hover-gif {
       display: none;
       position: fixed;
@@ -87,10 +96,13 @@
         <button class="btn" id="no-btn" onmouseover="dodge()" onclick="dodge()">No</button>
       </div>
     </div>
-    <h1 id="final-message" style="display:none;">I knew you'd say yes!  It's a date ❤️</h1>
+
+    <div id="final-message" style="display:none;">
+      <h1>I knew you'd say yes! <br> It's a date ❤️</h1>
+      <img id="success-gif" src="" alt="Celebration GIF">
+    </div>
   </div>
 
-  <!-- GIF that appears when hovering "No" -->
   <div id="hover-gif">
     <img id="gif-img" src="" alt="Funny Reaction">
   </div>
@@ -100,13 +112,13 @@
     let nickIndex = 0;
     let scale = 1;
 
-    // Array of GIF URLs
+    // Array of GIF URLs for the "No" dodge
     const gifUrls = [
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3phczk3OHZtbGo1ZGd2ZGxza3doY2V4NGVraGg4OHprMG1uaGR1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/evVKsrjZEqVVWvE2VR/giphy.gif", // funny reaction
-      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHdpaDhhc3B5azNmMXNmcm5xOG40NGNweDVmM2phd3oxc2VtenVpYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bsbWMhdBjFH41CcP94/giphy.gif", // teddy bear hearts
-      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnRmY3BkZGFyN21zZDhhb2c4NWIyMGl5dG81b2k3a2owcXZ0amFpMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pxupgJzf63VvXQYPbt/giphy.gif", // cartoon love
-      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMml3a2Nqa3hjcHI1a3ZyNTJ6OXczY2NrdzRvOXEyNzk5dDQ3aGt0MiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ovif9xhHfDZ8ekYn8V/giphy.gif", // romantic kiss
-      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTdib3FidGdzOWdvODMyZmQ2ampkd2R2bmQ1Y3FqMm9tNW10bmVheSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/8ROitEgUSOn6A2q8pi/giphy.gif"  // hearts explosion
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3phczk3OHZtbGo1ZGd2ZGxza3doY2V4NGVraGg4OHprMG1uaGR1MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/evVKsrjZEqVVWvE2VR/giphy.gif",
+      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnRmY3BkZGFyN21zZDhhb2c4NWIyMGl5dG81b2k3a2owcXZ0amFpMiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/pxupgJzf63VvXQYPbt/giphy.gif",
+      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMml3a2Nqa3hjcHI1a3ZyNTJ6OXczY2NrdzRvOXEyNzk5dDQ3aGt0MiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/ovif9xhHfDZ8ekYn8V/giphy.gif",
+      "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHdpaDhhc3B5azNmMXNmcm5xOG40NGNweDVmM2phd3oxc2VtenVpYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bsbWMhdBjFH41CcP94/giphy.gif",
+      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2JwZ212MTB3NjZ5ZW5xZDRtNHZhcW51YmZocGwyaGw5NmoyYzFkbyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GZvnIhrPevWuPx0RYB/giphy.gif"
     ];
 
     // Change nickname every 500ms
@@ -121,39 +133,40 @@
       const hoverGif = document.getElementById('hover-gif');
       const gifImg = document.getElementById('gif-img');
 
-      // Move "No" button randomly
       noBtn.style.position = 'fixed';
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
       const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
 
-      // Make "Yes" button bigger each time
       scale += 0.3;
       yesBtn.style.transform = `scale(${scale})`;
 
-      // Pick a random GIF
       const randomGif = gifUrls[Math.floor(Math.random() * gifUrls.length)];
       gifImg.src = randomGif;
 
-      // Show GIF in center
       hoverGif.style.display = "block";
       hoverGif.style.opacity = "1";
 
-      // Hide GIF after 2 seconds (fade out)
       setTimeout(() => {
         hoverGif.style.opacity = "0";
         setTimeout(() => {
           hoverGif.style.display = "none";
-        }, 500); // wait for fade transition
+        }, 500);
       }, 2000);
     }
 
     function sayYes() {
       document.getElementById('main-content').style.display = 'none';
-      document.getElementById('final-message').style.display = 'block';
+      const finalSection = document.getElementById('final-message');
       
-      // Celebration speed
+      // Setting the final "Yes" GIF
+      const successGif = document.getElementById('success-gif');
+      successGif.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjFrdnh1Z3R1ajhjODF0ancxYnd3c3RubXh3eDlxeng4dW11cjU4MCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/OfkGZ5H2H3f8Y/giphy.gif";
+
+      finalSection.style.display = 'block';
+      
+      // Intense celebration speed
       setInterval(createHeart, 100);
     }
 
@@ -166,6 +179,8 @@
       document.body.appendChild(heart);
       setTimeout(() => { heart.remove(); }, 5000);
     }
+    
+    // Initial background drift
     setInterval(createHeart, 400);
   </script>
 </body>
